@@ -8,16 +8,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class RecipeController {
 
-    private RecipeService recipeServiceImpl;
+    private RecipeService recipeService;
 
-    public RecipeController(RecipeService recipeServiceImpl) {
-        this.recipeServiceImpl = recipeServiceImpl;
+    public RecipeController(RecipeService recipeService) {
+        this.recipeService = recipeService;
     }
 
     @RequestMapping("/recipes")
     public String getRecipes(Model model) {
 
-        model.addAttribute("recipes", recipeServiceImpl.findAll());
+        model.addAttribute("recipes", recipeService.findAll());
 
         return "recipe/index";
     }
