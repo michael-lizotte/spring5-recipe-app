@@ -22,4 +22,33 @@ jobs:
           paths:
             - ~/.m2
           key: v1-dependencies-{{ checksum "pom.xml" }}
+  test:
+    docker:
+      - image: circleci/openjdk:8-jdk-stretch
+    steps:
+      - checkout
       - run: mvn verify
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build:
+        filters:
+          branches:
+            only:
+              - master
+              - develop
+              - release/*
+              - bugfix/*
+              - feature/*
+      - test:
+        requires:
+          - build
+        filters:
+          branches:
+            only:
+              - master
+              - develop
+              - release/*
+              - bugfix/*
+              - feature/*
