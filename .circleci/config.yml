@@ -33,22 +33,22 @@ workflows:
   build_and_test:
     jobs:
       - build:
-        filters:
-          branches:
-            only:
-              - master
-              - develop
-              - release/*
-              - bugfix/*
-              - feature/*
+          filters:
+            branches:
+              only:
+                - master
+                - develop
+                - release/*
+                - bugfix/*
+                - feature/*
       - test:
-        requires:
-          - build
-        filters:
-          branches:
-            only:
-              - master
-              - develop
-              - release/*
-              - bugfix/*
-              - feature/*
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - master
+                - develop
+                - release/*
+                - bugfix/*
+                - feature/*
