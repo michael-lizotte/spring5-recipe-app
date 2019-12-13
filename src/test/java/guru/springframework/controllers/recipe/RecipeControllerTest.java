@@ -7,11 +7,8 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MockMvcBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
 
@@ -20,7 +17,8 @@ import java.util.Set;
 
 import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
-import static org.springframework.http.RequestEntity.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 public class RecipeControllerTest {
 
@@ -43,7 +41,22 @@ public class RecipeControllerTest {
         MockMvc mock = MockMvcBuilders.standaloneSetup(controller).build();
 
         mock.perform(MockMvcRequestBuilders.get("/recipes"))
-                .andExpect(MockMvcResultMatchers.status().isOk());
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void getRecipe() throws Exception {
+
+        Recipe recipe = new Recipe();
+        recipe.setId(1l);
+
+        MockMvc mock = MockMvcBuilders.standaloneSetup(controller).build();
+
+        when(recipeService.findById(anyLong())).thenReturn(java.util.Optional.of(recipe));
+
+        mock.perform(get("/recipes/show/1"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("recipe/show"));
     }
 
     @Test
@@ -59,7 +72,7 @@ public class RecipeControllerTest {
 
         String view = controller.getRecipes(model);
 
-        assertEquals("recipe/index", view);
+        assertEquals("index", view);
         verify(model, times(1)).addAttribute(eq("recipes"), arg.capture());
         assertEquals(2, arg.getValue().size());
     }

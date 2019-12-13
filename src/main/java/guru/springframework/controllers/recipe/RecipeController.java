@@ -3,6 +3,7 @@ package guru.springframework.controllers.recipe;
 import guru.springframework.services.RecipeService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -19,6 +20,13 @@ public class RecipeController {
 
         model.addAttribute("recipes", recipeService.findAll());
 
-        return "recipe/index";
+        return "index";
+    }
+
+    @RequestMapping("/recipes/show/{id}")
+    public String getRecipe(Model model, @PathVariable String id) {
+        model.addAttribute("recipe", recipeService.findById(new Long(id)).orElse(null));
+
+        return "recipe/show";
     }
 }
