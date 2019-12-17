@@ -1,5 +1,7 @@
 package guru.springframework.services;
 
+import guru.springframework.converters.RecipeCommandToRecipe;
+import guru.springframework.converters.RecipeToRecipeCommand;
 import guru.springframework.domain.Recipe;
 import guru.springframework.repositories.RecipeRepository;
 import org.junit.Before;
@@ -21,11 +23,17 @@ public class RecipeServiceImplTest {
     @Mock
     RecipeRepository recipeRepository;
 
+    @Mock
+    RecipeCommandToRecipe recipeCommandToRecipe;
+
+    @Mock
+    RecipeToRecipeCommand recipeToRecipeCommand;
+
 
     @Before
     public void before() throws Exception {
         MockitoAnnotations.initMocks(this);
-        recipeService = new RecipeServiceImpl(recipeRepository);
+        recipeService = new RecipeServiceImpl(recipeRepository, recipeCommandToRecipe, recipeToRecipeCommand);
     }
 
     @Test
@@ -49,9 +57,9 @@ public class RecipeServiceImplTest {
 
         when(recipeRepository.findById(anyLong())).thenReturn(recipeOpt);
 
-        Optional<Recipe> recipeOptReturned = recipeService.findById(1l);
+        Recipe recipeOptReturned = recipeService.findById(1l);
 
-        assertNotNull(recipeOptReturned.orElse(null));
+        assertNotNull(recipeOptReturned);
         verify(recipeRepository, times(1)).findById(anyLong());
         verify(recipeRepository, never()).findAll();
     }

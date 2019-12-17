@@ -40,12 +40,12 @@ public class DataLoader implements CommandLineRunner {
         System.out.println("Loading data...");
 
         // Loading Units of measures
-        Optional<UnitOfMeasure> teaSpoon = unitOfMeasureRepository.findByDescription("Teaspoon");
-        Optional<UnitOfMeasure> tableSpoon = unitOfMeasureRepository.findByDescription("Tablespoon");
+        Optional<UnitOfMeasure> teaSpoon = unitOfMeasureRepository.findByDescription("teaspoon of ");
+        Optional<UnitOfMeasure> tableSpoon = unitOfMeasureRepository.findByDescription("tablespoon of ");
 //        Optional<UnitOfMeasure> cup = unitOfMeasureRepository.findByDescription("Cup");
 //        Optional<UnitOfMeasure> pinch = unitOfMeasureRepository.findByDescription("Pinch");
 //        Optional<UnitOfMeasure> ounce = unitOfMeasureRepository.findByDescription("Ounce");
-        Optional<UnitOfMeasure> whole = unitOfMeasureRepository.findByDescription("Whole");
+        Optional<UnitOfMeasure> whole = unitOfMeasureRepository.findByDescription(" ");
 
         if (!teaSpoon.isPresent() || !tableSpoon.isPresent() || !whole.isPresent()) {
             throw new RuntimeException("Missing unit of measure");
@@ -87,7 +87,7 @@ public class DataLoader implements CommandLineRunner {
         guacamoleRecipe.setName("Guacamole");
         guacamoleRecipe.setPrepTime(10);
         guacamoleRecipe.setCookTime(0);
-        guacamoleRecipe.setDescription("Guacamole, a dip made from avocados, is originally from Mexico. The name is derived from two Aztec Nahuatl words—ahuacatl (avocado) and molli (sauce).");
+        guacamoleRecipe.setDescription("Perfect Guacamole");
         guacamoleRecipe.setDirections("1 Cut avocado, remove flesh: Cut the avocados in half. Remove seed. Score the inside of the avocado with a blunt knife and scoop out the flesh with a spoon. (See How to Cut and Peel an Avocado.) Place in a bowl.\n" +
                 "\n" +
                 "2 Mash with a fork: Using a fork, roughly mash the avocado. (Don't overdo it! The guacamole should be a little chunky.)\n" +
@@ -102,6 +102,9 @@ public class DataLoader implements CommandLineRunner {
                 "\n" +
                 "Chilling tomatoes hurts their flavor, so if you want to add chopped tomato to your guacamole, add it just before serving.");
         guacamoleRecipe.setDifficulty(Difficulty.EASY);
+        guacamoleRecipe.setServings(4);
+        guacamoleRecipe.setSource("Some source");
+        guacamoleRecipe.setUrl("http://www.superGuacamole.com");
 
         guacamoleRecipe.getIngredients().add(avocados);
         guacamoleRecipe.getIngredients().add(kosherSalt);

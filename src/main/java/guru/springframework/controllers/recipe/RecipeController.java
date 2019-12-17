@@ -17,7 +17,6 @@ public class RecipeController {
 
     @RequestMapping("/recipes")
     public String getRecipes(Model model) {
-
         model.addAttribute("recipes", recipeService.findAll());
 
         return "index";
@@ -25,7 +24,7 @@ public class RecipeController {
 
     @RequestMapping("/recipes/show/{id}")
     public String getRecipe(Model model, @PathVariable String id) {
-        model.addAttribute("recipe", recipeService.findById(new Long(id)).orElse(null));
+        model.addAttribute("recipe", recipeService.findById(new Long(id)));
 
         return "recipe/show";
     }
