@@ -77,6 +77,9 @@ public class DataLoader implements CommandLineRunner {
         freshLimeJuice.setAmount(new BigDecimal(1));
         freshLimeJuice.setUom(tableSpoon.get());
 
+        Notes notes = new Notes();
+        notes.setNote("Some note");
+
         // Loading Recipe
         Recipe guacamoleRecipe = new Recipe();
 
@@ -101,6 +104,7 @@ public class DataLoader implements CommandLineRunner {
                 "4 Cover with plastic and chill to store: Place plastic wrap on the surface of the guacamole cover it and to prevent air reaching it. (The oxygen in the air causes oxidation which will turn the guacamole brown.) Refrigerate until ready to serve.\n" +
                 "\n" +
                 "Chilling tomatoes hurts their flavor, so if you want to add chopped tomato to your guacamole, add it just before serving.");
+        guacamoleRecipe.setNotes(notes);
         guacamoleRecipe.setDifficulty(Difficulty.EASY);
         guacamoleRecipe.setServings(4);
         guacamoleRecipe.setSource("Some source");
@@ -109,6 +113,8 @@ public class DataLoader implements CommandLineRunner {
         guacamoleRecipe.getIngredients().add(avocados);
         guacamoleRecipe.getIngredients().add(kosherSalt);
         guacamoleRecipe.getIngredients().add(freshLimeJuice);
+
+        notes.setRecipe(guacamoleRecipe);
 
         mexican.getRecipes().add(guacamoleRecipe);
         vegan.getRecipes().add(guacamoleRecipe);
