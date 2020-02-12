@@ -53,4 +53,20 @@ public class Recipe {
         this.notes = notes;
         notes.setRecipe(this);
     }
+
+    public void addIngredient(Ingredient ingredient) {
+        if (ingredient == null) {
+            return;
+        }
+        this.ingredients.add(ingredient);
+        ingredient.setRecipe(this);
+    }
+
+    public void removeIngredient(Ingredient ingredient) {
+        if (ingredient == null) {
+            return;
+        }
+        this.ingredients.remove(ingredient);
+        ingredient.setRecipe(null);
+    }
 }

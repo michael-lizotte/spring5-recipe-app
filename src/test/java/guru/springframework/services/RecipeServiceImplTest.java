@@ -39,7 +39,7 @@ public class RecipeServiceImplTest {
     @Test
     public void findAll() {
         Recipe recipe = new Recipe();
-        HashSet recipesData = new HashSet();
+        HashSet<Recipe> recipesData = new HashSet<>();
         recipesData.add(recipe);
 
         when(recipeRepository.findAll()).thenReturn(recipesData);
@@ -67,7 +67,7 @@ public class RecipeServiceImplTest {
     @Test
     public void getRecipesTest() throws Exception {
         Recipe recipe = new Recipe();
-        HashSet recipesData = new HashSet();
+        HashSet<Recipe> recipesData = new HashSet<>();
         recipesData.add(recipe);
 
         when(recipeService.findAll()).thenReturn(recipesData);

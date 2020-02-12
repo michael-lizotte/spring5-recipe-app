@@ -110,9 +110,9 @@ public class DataLoader implements CommandLineRunner {
         guacamoleRecipe.setSource("Some source");
         guacamoleRecipe.setUrl("http://www.superGuacamole.com");
 
-        guacamoleRecipe.getIngredients().add(avocados);
-        guacamoleRecipe.getIngredients().add(kosherSalt);
-        guacamoleRecipe.getIngredients().add(freshLimeJuice);
+        guacamoleRecipe.addIngredient(avocados);
+        guacamoleRecipe.addIngredient(kosherSalt);
+        guacamoleRecipe.addIngredient(freshLimeJuice);
 
         notes.setRecipe(guacamoleRecipe);
 

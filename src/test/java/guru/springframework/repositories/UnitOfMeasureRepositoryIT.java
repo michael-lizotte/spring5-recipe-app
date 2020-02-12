@@ -27,15 +27,15 @@ public class UnitOfMeasureRepositoryIT {
     @Test
     @DirtiesContext // Will reload the whole context of spring after the test (takes longer)
     public void findByDescription() {
-        Optional<UnitOfMeasure> uomOpt = unitOfMeasureRepository.findByDescription("Teaspoon");
+        Optional<UnitOfMeasure> uomOpt = unitOfMeasureRepository.findByDescription("teaspoon of ");
 
-        assertEquals("Teaspoon", uomOpt.get().getDescription());
+        assertEquals("teaspoon of ", uomOpt.get().getDescription());
     }
 
     @Test
     public void findByDescriptionCup() {
-        Optional<UnitOfMeasure> uom = unitOfMeasureRepository.findByDescription("Cup");
+        Optional<UnitOfMeasure> uom = unitOfMeasureRepository.findByDescription("cup of ");
 
-        assertEquals("Cup", uom.get().getDescription());
+        assertEquals("cup of ", uom.get().getDescription());
     }
 }

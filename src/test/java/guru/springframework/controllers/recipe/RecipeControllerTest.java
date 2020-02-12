@@ -10,7 +10,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
 
@@ -62,7 +61,7 @@ public class RecipeControllerTest {
     public void getRecipes() {
         Recipe recipe = new Recipe();
         recipe.setDescription("Some description");
-        HashSet recipesData = new HashSet();
+        HashSet<Recipe> recipesData = new HashSet<>();
         recipesData.add(recipe);
         recipesData.add(new Recipe());
 
@@ -78,8 +77,6 @@ public class RecipeControllerTest {
 
     @Test
     public void testGetNewRecipeForm() throws Exception {
-        RecipeCommand command = new RecipeCommand();
-
         mock.perform(get("/recipe/new"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("recipe/recipeForm"))
@@ -103,7 +100,7 @@ public class RecipeControllerTest {
 
     @Test
     public void testDeleteAction() throws Exception {
-        mock.perform(get("recipe/delete/1"))
+        mock.perform(get("/recipe/delete/1"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/"));
 
