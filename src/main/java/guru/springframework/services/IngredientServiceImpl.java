@@ -7,23 +7,29 @@ import guru.springframework.domain.Ingredient;
 import guru.springframework.domain.Recipe;
 import guru.springframework.repositories.IngredientRepository;
 import guru.springframework.repositories.RecipeRepository;
+import guru.springframework.repositories.UnitOfMeasureRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
+@Slf4j
 @Service
 public class IngredientServiceImpl implements IngredientService {
 
     private final IngredientRepository repository;
     private final RecipeRepository recipeRepository;
+    private final UnitOfMeasureRepository uomRepository;
 
     private final IngredientToIngredientCommand ingredientToIngredientCommand;
     private final IngredientCommandToIngredient ingredientCommandToIngredient;
 
-    public IngredientServiceImpl(IngredientRepository repository, RecipeRepository recipeRepository, IngredientToIngredientCommand ingredientToIngredientCommand, IngredientCommandToIngredient ingredientCommandToIngredient) {
+    public IngredientServiceImpl(IngredientRepository repository, RecipeRepository recipeRepository, UnitOfMeasureRepository uomRepository, IngredientToIngredientCommand ingredientToIngredientCommand, IngredientCommandToIngredient ingredientCommandToIngredient) {
         this.repository = repository;
         this.recipeRepository = recipeRepository;
+        this.uomRepository = uomRepository;
         this.ingredientToIngredientCommand = ingredientToIngredientCommand;
         this.ingredientCommandToIngredient = ingredientCommandToIngredient;
     }
@@ -51,9 +57,38 @@ public class IngredientServiceImpl implements IngredientService {
 
     @Override
     public IngredientCommand saveIngredientCommand(IngredientCommand command) {
-        Ingredient ingredient = ingredientCommandToIngredient.convert(command);
+        Optional<Recipe> recipeOpt = recipeRepository.findById(command.getRecipeId());
 
-        Ingredient savedIngredient = repository.save(ingredient);
-        return ingredientToIngredientCommand.convert(savedIngredient);
+        if (!recipeOpt.isPresent()) {
+            // todo throw new error
+            log.error("Recipe not found for id: " + command.getRecipeId());
+            return new IngredientCommand();
+        } else {
+            Recipe recipe = recipeOpt.get();
+
+            Optional<Ingredient> ingredientOpt = recipe
+                    .getIngredients()
+                    .stream()
+                    .filter(ingredient -> ingredient.getId().equals(command.getId()))
+                    .findFirst();
+
+            if (ingredientOpt.isPresent()) {
+                Ingredient ingredient = ingredientOpt.get();
+                ingredient.setDescription(command.getDescription());
+                ingredient.setAmount(command.getAmount());
+                ingredient.setUom(uomRepository
+                    .findById(command.getUnitOfMeasure().getId())
+                    .orElseThrow(() -> new RuntimeException(("UOM NOT FOUND"))));
+            } else {
+                recipe.addIngredient(ingredientCommandToIngredient.convert(command));
+            }
+
+            Recipe savedRecipe = recipeRepository.save(recipe);
+
+            return ingredientToIngredientCommand.convert(savedRecipe.getIngredients().stream()
+                .filter(recipeIngredients -> recipeIngredients.getId().equals(command.getId()))
+                .findFirst()
+                .get());
+        }
     }
 }

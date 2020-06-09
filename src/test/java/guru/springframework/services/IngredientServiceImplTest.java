@@ -9,6 +9,7 @@ import guru.springframework.domain.Ingredient;
 import guru.springframework.domain.Recipe;
 import guru.springframework.repositories.IngredientRepository;
 import guru.springframework.repositories.RecipeRepository;
+import guru.springframework.repositories.UnitOfMeasureRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -26,6 +27,9 @@ public class IngredientServiceImplTest {
     IngredientRepository ingredientRepository;
 
     @Mock
+    UnitOfMeasureRepository uomRepository;
+
+    @Mock
     RecipeRepository recipeRepository;
 
     private final IngredientToIngredientCommand ingredientToIngredientCommand;
@@ -41,7 +45,7 @@ public class IngredientServiceImplTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        service = new IngredientServiceImpl(ingredientRepository, recipeRepository, ingredientToIngredientCommand, ingredientCommandToIngredient);
+        service = new IngredientServiceImpl(ingredientRepository, recipeRepository, uomRepository, ingredientToIngredientCommand, ingredientCommandToIngredient);
     }
 
     @Test
